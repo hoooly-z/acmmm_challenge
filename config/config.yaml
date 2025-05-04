@@ -1,0 +1,44 @@
+# 项目配置文件
+
+# 模型配置
+model:
+  name: "Qwen2.5-VL-7B"
+  model_path: "Qwen/Qwen2.5-VL-7B"
+  device_map: "auto"  # 可选: "auto", "cuda", "cpu"
+  precision: "bf16"   # 可选: "bf16", "fp16", "int8"
+  use_flash_attention: true
+  max_new_tokens: 512
+  temperature: 0.7
+  top_p: 0.9
+
+# 检索配置
+retrieval:
+  vector_db:
+    type: "faiss"   # 可选: "faiss", "milvus", "elasticsearch"
+    index_path: "./index_data"
+    dimension: 1024  # 向量维度，根据编码器确定
+  
+  text_retrieval:
+    top_k: 5  # 检索相关文章数量
+    
+  image_retrieval:
+    top_k: 10  # 检索相关图像数量
+
+# 数据配置
+data:
+  openevents_path: "./openevents_data"
+  news_articles_path: "./openevents_data/news_articles"
+  images_path: "./openevents_data/images"
+  annotations_path: "./openevents_data/annotations"
+  batch_size: 8
+  
+# 计算资源配置
+compute:
+  max_memory: "20GB"  # 最大使用内存
+  num_workers: 4      # 数据加载工作线程数
+
+# 评估配置
+evaluation:
+  metrics:
+    task1: ["bleu", "meteor", "cider", "spice", "bertscore", "clipscore"]
+    task2: ["recall@1", "recall@5", "precision@1", "precision@5", "map"]
